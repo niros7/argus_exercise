@@ -6,3 +6,5 @@
 *.ipr
 *.iml
 out/
+build/
+deployment/

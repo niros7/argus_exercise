@@ -15,7 +15,7 @@ import scala.util.{Failure, Success}
 
 object Server extends Logging {
 
-  private def routes(handler: Handler): server.Route = {
+  def routes(handler: Handler): server.Route = {
     pathPrefix("api") {
       path("resource") {
         concat(
@@ -44,6 +44,7 @@ object Server extends Logging {
                 }
                 case Success(value) =>
                   if (value) {
+                    logger.info("Successfully created to resource")
                     complete(StatusCodes.Created)
                   } else {
                     complete(StatusCodes.InternalServerError)

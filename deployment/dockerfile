@@ -1,0 +1,6 @@
+FROM openjdk:11.0.6-slim
+EXPOSE 8080
+COPY argus-1.0-SNAPSHOT /opt/argus/
+WORKDIR /opt/argus/bin
+RUN chmod 777 *
+ENTRYPOINT ./argus
