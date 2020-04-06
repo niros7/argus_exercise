@@ -1,2 +1,8 @@
 *.class
 *.log
+.gradle/
+.idea/
+*.iws
+*.ipr
+*.iml
+out/
