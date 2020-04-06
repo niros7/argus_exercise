@@ -1,6 +1,6 @@
 package argus
 
-import argus.conf.Plain
+import argus.conf.{Consul, Plain}
 import argus.persistence.Redis
 import argus.server.{EntityHandler, Server}
 
@@ -8,7 +8,7 @@ object Main extends Logging {
 
   def main(args: Array[String]): Unit = {
     logger.info("The program has started")
-    val redis = Redis(Plain.url, Plain.port)
+    val redis = Redis(Consul.uri, Consul.port)
     val handler = new EntityHandler(redis)
     Server.start(handler)
   }

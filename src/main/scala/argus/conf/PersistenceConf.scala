@@ -1,7 +1,7 @@
 package argus.conf
 
 trait PersistenceConf {
-  def url: String
+  def uri: String
 
   def port: Int
 }

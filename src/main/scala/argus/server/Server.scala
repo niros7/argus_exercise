@@ -44,6 +44,7 @@ object Server extends Logging {
                 }
                 case Success(value) =>
                   if (value) {
+                    logger.info("Successfully created to resource")
                     complete(StatusCodes.Created)
                   } else {
                     complete(StatusCodes.InternalServerError)

@@ -1,6 +1,7 @@
 plugins {
     id 'idea'
     id 'scala'
+    id 'application'
 }
 
 group 'org.example'
@@ -13,10 +14,16 @@ repositories {
 dependencies {
     implementation 'org.scala-lang:scala-library:2.13.1'
     implementation 'net.debasishg:redisclient_2.13:3.20'
+    implementation 'com.typesafe:config:1.4.0'
+    implementation 'com.orbitz.consul:consul-client:1.4.2'
     implementation 'com.typesafe.akka:akka-http_2.13:10.1.11'
     implementation 'com.typesafe.akka:akka-stream_2.13:2.6.4'
     implementation 'com.typesafe.akka:akka-actor_2.13:2.6.4'
     implementation 'org.apache.logging.log4j:log4j-core:2.13.1'
     implementation 'org.apache.logging.log4j:log4j-api:2.13.1'
     testImplementation 'org.scalatest:scalatest_2.13:3.1.1'
+}
+
+application {
+    mainClassName = 'argus.Main'
 }
