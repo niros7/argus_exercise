@@ -1,21 +1,14 @@
 package argus.server
 
-import akka.actor.ActorSystem
-import akka.event.Logging
 import akka.http.scaladsl.model.StatusCodes
-import akka.http.scaladsl.server.Directives._
-import akka.http.scaladsl.{Http, server}
-import akka.stream.ActorMaterializer
+import akka.http.scaladsl.server.{HttpApp, Route}
 import argus.Logging
-import akka.http.scaladsl.server.directives.DebuggingDirectives
 
-import scala.concurrent.ExecutionContextExecutor
-import scala.io.StdIn
 import scala.util.{Failure, Success}
 
-object Server extends Logging {
+class Server(handler: Handler) extends HttpApp with Logging {
 
-  def routes(handler: Handler): server.Route = {
+  def routes(handler: Handler): Route = {
     pathPrefix("api") {
       path("resource") {
         concat(
@@ -57,19 +50,11 @@ object Server extends Logging {
     }
   }
 
-  def start(handler: Handler) {
-    implicit val system: ActorSystem = ActorSystem("exercise")
-    implicit val materializer: ActorMaterializer = ActorMaterializer()
-    implicit val executionContext: ExecutionContextExecutor = system.dispatcher
-    val r = routes(handler)
-    val clientRouteLogged = DebuggingDirectives.logRequestResult("Client REST", Logging.InfoLevel)(r)
+  override protected def routes: Route = {
+    routes(handler)
+  }
 
-    val bindingFuture = Http().bindAndHandle(clientRouteLogged, "localhost", 8080)
-
-    println(s"Server online at http://localhost:8080/\nPress RETURN to stop...")
-    StdIn.readLine() // let it run until user presses return
-    bindingFuture
-      .flatMap(_.unbind()) // trigger unbinding from the port
-      .onComplete(_ => system.terminate()) // and shutdown when done
+  override def postHttpBindingFailure(cause: Throwable): Unit = {
+    cause.printStackTrace()
   }
 }

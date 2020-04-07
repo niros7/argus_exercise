@@ -14,9 +14,14 @@ class ServerSpec extends AnyFunSpec with Matchers with ScalatestRouteTest {
     new EntityHandler(new MockDb(entity))
   }
 
+  private def routes(entity: String) = {
+    val mockHandler = handler(entity)
+    new Server(mockHandler).routes(mockHandler)
+  }
+
   describe("server routes") {
     it("gets the saved entity") {
-      Get(uri) ~> Server.routes(handler("test")) ~> check {
+      Get(uri) ~> routes("test") ~> check {
         status shouldEqual StatusCodes.OK
         responseAs[String] shouldEqual "test"
       }
